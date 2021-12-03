@@ -1,0 +1,10 @@
+C:\Users\andre\OneDrive\Desktop\CSC_212_Final\CSC_212_Final\CSC_212_Final\CSC_212_Final\obj\Debug\CSC_212_Final.frmMain.resources
+C:\Users\andre\OneDrive\Desktop\CSC_212_Final\CSC_212_Final\CSC_212_Final\CSC_212_Final\obj\Debug\CSC_212_Final.Properties.Resources.resources
+C:\Users\andre\OneDrive\Desktop\CSC_212_Final\CSC_212_Final\CSC_212_Final\CSC_212_Final\obj\Debug\CSC_212_Final.csproj.GenerateResource.cache
+C:\Users\andre\OneDrive\Desktop\CSC_212_Final\CSC_212_Final\CSC_212_Final\CSC_212_Final\obj\Debug\CSC_212_Final.csproj.CoreCompileInputs.cache
+C:\Users\andre\OneDrive\Desktop\CSC_212_Final\CSC_212_Final\CSC_212_Final\CSC_212_Final\obj\Debug\CSC_212_Final.csprojAssemblyReference.cache
+C:\Users\andre\OneDrive\Desktop\CSC_212_Final\CSC_212_Final\CSC_212_Final\CSC_212_Final\bin\Debug\CSC_212_Final.exe.config
+C:\Users\andre\OneDrive\Desktop\CSC_212_Final\CSC_212_Final\CSC_212_Final\CSC_212_Final\bin\Debug\CSC_212_Final.exe
+C:\Users\andre\OneDrive\Desktop\CSC_212_Final\CSC_212_Final\CSC_212_Final\CSC_212_Final\bin\Debug\CSC_212_Final.pdb
+C:\Users\andre\OneDrive\Desktop\CSC_212_Final\CSC_212_Final\CSC_212_Final\CSC_212_Final\obj\Debug\CSC_212_Final.exe
+C:\Users\andre\OneDrive\Desktop\CSC_212_Final\CSC_212_Final\CSC_212_Final\CSC_212_Final\obj\Debug\CSC_212_Final.pdb

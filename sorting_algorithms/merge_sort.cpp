@@ -1,40 +1,26 @@
-
-#include <iostream>
-#include <random>
-#include <cstdlib> 
-#include <ctime> 
+#include<iostream> 
 using namespace std;
 
-void randomarrays();
-void merge(int A[], int low, int high, int mid);
-void mergeSort(int A[],int low, int high);
+void Merge(int A[],int p, int q,int r);
+void MergeSort(int A[],int p,int r);
 
-int size;
-
-int main(){
-    cout<< "How many numbers you want in the array?" << endl;
-    cin >> size;
-    int array[size];
- //Random number Generator
-    srand((unsigned)time(0)); 
-        for(int i=0; i<size; i++){ 
-            array[i] = (rand()%100)+1;
-            cout << array[i] << endl;
-        }
-
-    int low =0;
-    int high=size-1;
-    mergeSort(array,low,high);
-    cout<<"Sorted List";
-    for(int i=0;i<size;i++)
+int main()
+{
+    int A[7]= {90,50,55,11,66,99,29};
+    //Calling the MergeSort()
+    //First we are passing the array
+    //the start index that is 0
+    //and the size of the array n
+    
+    MergeSort(A,0,7-1);
+    cout<<"The Sorted List is\n";
+    for(int i=0;i<7;i++)
     {
-        cout<<array[i]<<" ";
+        cout<<A[i]<<" ";
     }
     return 0;
 }
-
-using namespace std;
-int Merge(int A[],int p, int q,int r)     
+void Merge(int A[],int p, int q,int r)     
 {
 
     int n1,n2,i,j,k; 
@@ -86,7 +72,7 @@ int Merge(int A[],int p, int q,int r)
 //This part will Divide the array into 
 //Sub array and then will Merge them
 //by calling Merge()
-int MergeSort(int A[],int p,int r)    
+void MergeSort(int A[],int p,int r)    
 {
     int q;                                
     if(p<r)
@@ -97,3 +83,4 @@ int MergeSort(int A[],int p,int r)
         Merge(A,p,q,r);
     }
 }
+

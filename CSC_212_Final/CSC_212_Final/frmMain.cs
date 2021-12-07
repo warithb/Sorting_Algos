@@ -1,4 +1,10 @@
-﻿using System;
+﻿//Andre Savage
+//Warith Balogun
+//Ade Abujade
+//Cody Chu
+
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -8,12 +14,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Windows.Forms;
+using SortTimer;
 
 namespace CSC_212_Final
 {
     public partial class frmMain : Form
     {
-
         public frmMain()
         {
             InitializeComponent();
@@ -24,18 +30,17 @@ namespace CSC_212_Final
         {
             grpDisplay.Visible = false;
             grpSetup.Visible = true;
-            grpSortSelect.Visible = false;
-            txtArray.Clear();
-            
-            radInsertion.Checked = false;
-            radMerge.Checked = false;
-            radShell.Checked = false;
-            radInsertion.Checked = false;
-            txtArraySize.Value = 5;
+            grpSort.Visible = true;
+            btnClear.Visible = true;
 
-            
+            txtTime.Clear();
 
+            if (txtArray.Text == string.Empty)
+            {
+                grpSort.Visible = false;
+                btnClear.Visible = false;
 
+            }
         }
 
         private void exitToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -52,6 +57,9 @@ namespace CSC_212_Final
         private void btnSort_Click_1(object sender, EventArgs e)
         {
             Form form = this;
+            int[] arr = txtArray.Text.Split(',').Select(int.Parse).ToArray();
+
+
             //Check data
             if (radInsertion.Checked == false && radMerge.Checked == false && radShell.Checked == false && radQuick.Checked == false)
             {
@@ -62,51 +70,64 @@ namespace CSC_212_Final
             {
                 grpSetup.Visible = false;
                 grpDisplay.Visible = true;
-                int[] arr = txtArray.Text.Split(',').Select(int.Parse).ToArray();
+                
 
                 if (radInsertion.Checked == true)
                 {
+                    
+
+                    var insertionWatch = System.Diagnostics.Stopwatch.StartNew();
+
                     //init graph
                     lblSortName.Text = radInsertion.Text + " Sort";
                     chtMain.Series[0].Points.DataBindY(arr);
                     chtMain.ChartAreas[0].AxisX.LabelStyle.Enabled = false;
+                    long insertionTime;
 
                     //sort
                     int i = 1;
                     int j = i;
                     int temp = 0;
 
-                    string a = "1: Iterate from arr[1] to arr[n] over the array.";
-                    string b = "2: Compare the current element(key) to its predecessor.";
-                    string c = "3: If the key element is smaller than its predecessor, " +
-                        "compare it to the elements before.Move the greater elements one position up to make space for the swapped element.";
 
                     for (i = 1; i < arr.Length; i++)
                     {
-                        //txtOut.Text = a;
 
                         for (j = i; j > 0; j--)
                         {
-                            ///txtOut.Text = b;
 
                             if (arr[j - 1] > arr[j])
                             {
-                                //txtOut.Text = c;
+
                                 temp = arr[j - 1];
                                 arr[j - 1] = arr[j];
                                 arr[j] = temp;
-                                chartDisplay(arr);
+                                if (chkVisual.Checked)
+                                {
+                                    chartDisplay(ref arr);
+                                }
+                                
+                                insertionTime = insertionWatch.ElapsedMilliseconds;
+                                txtTime.Text = $"Execution Time: {insertionTime / 1000} seconds";
+
+                                if (chkVisual.Checked)
+                                {
+                                    chartDisplay(ref arr);
+                                }
                             }
 
-                           
-                            
+
+
                         }
                     }
 
-                    chartDisplay(arr);
+                    chartDisplay(ref arr);
+                    insertionWatch.Stop();
+                    txtTime.Text = $"Time To Execute: {insertionWatch.ElapsedMilliseconds / 1000}.{insertionWatch.ElapsedMilliseconds % 1000} seconds";
+
                 }
 
-            
+
 
                 else if (radMerge.Checked == true)
                 {
@@ -114,6 +135,8 @@ namespace CSC_212_Final
                     lblSortName.Text = radMerge.Text + " Sort";
                     chtMain.Series[0].Points.DataBindY(arr);
                     chtMain.ChartAreas[0].AxisX.LabelStyle.Enabled = false;
+                    var mergeWatch = System.Diagnostics.Stopwatch.StartNew();
+                    long mergeTime;
 
                     //sort
 
@@ -191,7 +214,11 @@ namespace CSC_212_Final
                     // merge()
                     void sort(int l, int r)
                     {
-                        
+                        if (chkVisual.Checked)
+                        {
+                            chartDisplay(ref arr);
+                        }
+
                         if (l < r)
                         {
                             // Find the middle
@@ -201,25 +228,85 @@ namespace CSC_212_Final
                             // Sort first and
                             // second halves
                             sort(l, m);
-                            sort( m + 1, r);
+                            sort(m + 1, r);
 
                             // Merge the sorted halves
                             merge(l, m, r);
 
-                            chartDisplay(arr);
-
+                           
+                            
+                            mergeTime = mergeWatch.ElapsedMilliseconds;
+                            txtTime.Text = $"Time to Execute: {mergeTime / 1000} seconds";
                         }
                     }
+                    mergeWatch.Stop();
+                    chartDisplay(ref arr);
+                    txtTime.Text = $"Time To Execute: {mergeWatch.ElapsedMilliseconds / 1000}.{mergeWatch.ElapsedMilliseconds % 1000} seconds";
                 }
 
                 else if (radShell.Checked == true)
                 {
                     //init graph
-                    lblSortName.Text = radMerge.Text + " Sort";
+                    lblSortName.Text = radShell.Text + " Sort";
                     chtMain.Series[0].Points.DataBindY(arr);
                     chtMain.ChartAreas[0].AxisX.LabelStyle.Enabled = false;
+                    var shellWatch = System.Diagnostics.Stopwatch.StartNew();
+                    long shellTime;
 
                     //sort
+                    int n = arr.Length;
+
+                    // Start with a big gap,
+                    // then reduce the gap
+                    for (int gap = n / 2; gap > 0; gap /= 2)
+                    {
+                        // Do a gapped insertion sort for this gap size.
+                        // The first gap elements a[0..gap-1] are already
+                        // in gapped order keep adding one more element
+                        // until the entire array is gap sorted
+                        for (int i = gap; i < n; i += 1)
+                        {
+                            // add a[i] to the elements that have
+                            // been gap sorted save a[i] in temp and
+                            // make a hole at position i
+                            int temp = arr[i];
+
+                            // shift earlier gap-sorted elements up until
+                            // the correct location for a[i] is found
+                            int j;
+                            for (j = i; j >= gap && arr[j - gap] > temp; j -= gap)
+                            {
+
+
+                                arr[j] = arr[j - gap];
+                                if (chkVisual.Checked)
+                                {
+                                    chartDisplay(ref arr);
+                                }
+                            }
+                            // put temp (the original a[i])
+                            // in its correct location
+                            arr[j] = temp;
+
+                            shellTime = shellWatch.ElapsedMilliseconds;
+                            txtTime.Text = $"Execution Time: {shellTime / 1000} seconds";
+
+                            if (chkVisual.Checked)
+                            {
+                                chartDisplay(ref arr);
+                            }
+                        }
+
+                        if (chkVisual.Checked)
+                        {
+                            chartDisplay(ref arr);
+                        }
+                    }
+
+
+                    shellWatch.Stop();
+                    chartDisplay(ref arr);
+                    txtTime.Text = $"Time To Execute: {shellWatch.ElapsedMilliseconds / 1000}.{shellWatch.ElapsedMilliseconds % 1000} seconds";
 
                 }
 
@@ -230,24 +317,80 @@ namespace CSC_212_Final
                     lblSortName.Text = radQuick.Text + " Sort";
                     chtMain.Series[0].Points.DataBindY(arr);
                     chtMain.ChartAreas[0].AxisX.LabelStyle.Enabled = false;
-                    //Quick_Sort(arr, 0, arr.Length - 1);
+                    
+
+                    var  quickwatch = System.Diagnostics.Stopwatch.StartNew();
+                    long quickTime;
+                    chartDisplay(ref arr);
+                    QuickSort(0, arr.Length - 1);
+
+
+
+
+                    //sort
+                    void QuickSort(int start, int end)
+                    {
+                        if (chkVisual.Checked)
+                        {
+                            chartDisplay(ref arr);
+                        }
+                        quickTime = quickwatch.ElapsedMilliseconds;
+                        txtTime.Text = $"Execution Time: {quickTime / 1000} seconds";
+
+                        int i;
+                        if (start < end)
+                        {
+                            i = Partition(start, end);
+
+                            QuickSort(start, i - 1);
+                            QuickSort(i + 1, end);
+                        }
+                    }
+
+                    int Partition(int start, int end)
+                    {
+                        int temp;
+                        int p = arr[end];
+                        int i = start - 1;
+
+                        for (int j = start; j <= end - 1; j++)
+                        {
+                            if (arr[j] <= p)
+                            {
+                                i++;
+                                temp = arr[i];
+                                arr[i] = arr[j];
+                                arr[j] = temp;
+                            }
+                        }
+
+                        temp = arr[i + 1];
+                        arr[i + 1] = arr[end];
+                        arr[end] = temp;
+                        return i + 1;
+                    }
+
+
+
+                    quickwatch.Stop();
+                    chartDisplay(ref arr);
+                    quickTime = quickwatch.ElapsedMilliseconds;
+                    txtTime.Text = $"Time To Execute: {quickwatch.ElapsedMilliseconds / 1000}.{quickwatch.ElapsedMilliseconds % 1000} seconds";
+                    
 
                 }
-
-
-
             }
-
-            
         }
 
 
-        public void chartDisplay(int[] arr)
+        public void chartDisplay(ref int[] arr)
         {
             chtMain.Series[0].Points.DataBindY(arr);
+            txtOut.Text = string.Join(",", arr);
             Task.Delay(1).GetAwaiter().GetResult();
-
+   
         }
+
 
 
 
@@ -262,42 +405,107 @@ namespace CSC_212_Final
         private void btnGenArray_Click(object sender, EventArgs e)
         {
 
-            int[] arr = new int[Convert.ToInt32(txtArraySize.Value)];
-            var rand = new Random();
-            string o = string.Empty;
-            //string sep = ", ";
+            int size = Convert.ToInt32(txtArraySize.Value);
+            int min = Convert.ToInt32(txtMin.Value);
+            int max = Convert.ToInt32(txtMax.Value);
+            txtArray.Clear();
 
-            for (int i = 0; i < Convert.ToInt32(txtArraySize.Value); i++)
+            if (min > max)
             {
-                if (i == Convert.ToInt32(txtArraySize.Value) - 1)
-                {
-                    int temp = rand.Next(Convert.ToInt32(txtMin.Value), Convert.ToInt32(txtMax.Value));
-                    //arr.Append(temp);
-                    o += temp.ToString();
-                }
-
-                else
-                {
-                    int temp = rand.Next(Convert.ToInt32(txtMin.Value), Convert.ToInt32(txtMax.Value));
-                    //arr.Append(temp);
-                    o += temp.ToString() + ",";
-                }
-
+                MessageBox.Show("Maximum value must exceed minimum value", "Error");
             }
 
-            //txtArray.Visible = false;
-            txtArray.Text = o;
+            else if (radRandom.Checked)
+            {
+                int[] arr = getRandomArray(size, max, min);
+                txtArray.Text = arrTostring(arr);
+                grpSort.Visible = true;
+                btnClear.Visible = true;
+            }
 
-            grpSortSelect.Visible = true;
+            else if (radSorted.Checked)
+            {
+                int[] arr = getSortedArray(size, max, min);
+                txtArray.Text = arrTostring(arr);
+                grpSort.Visible = true;
+                btnClear.Visible = true;
+            }
+
+            else if (radReverse.Checked)
+            {
+                int[] arr = getReversedArray(size, max, min);
+                txtArray.Text = arrTostring(arr);
+                grpSort.Visible = true;
+                btnClear.Visible = true;
+            }
+
+            else
+            {
+                MessageBox.Show("Select a Sequence Type", "Error");
+            }
+
+            //grpSort.Visible = true;
             
         }
 
-        private void btnEnd_Click(object sender, EventArgs e)
+        public int[] getRandomArray(int size, int max, int min)
         {
-            frmMain_Load();
+            var rand = new Random();
+            int[] arr = new int[size];
+
+
+            for (int i = 0; i < size; i++)
+            {
+                arr[i] = rand.Next(min, max);
+            }
+
+            chart1.Series[0].Points.DataBindY(arr);
+            return arr;
         }
 
-    }
+        public int[] getReversedArray(int size, int max, int min)
+        {
+            int[] arr = getRandomArray(size, max, min);
 
+            MergeSortForGetArray ob = new MergeSortForGetArray();
+
+            arr = ob.Sort(ref arr);
+            Array.Reverse(arr);
+
+            chart1.Series[0].Points.DataBindY(arr);
+            return arr;
+        }
+
+        public int[] getSortedArray(int size, int max, int min)
+        {
+            int[] arr = getRandomArray(size, max, min);
+
+            MergeSortForGetArray ob = new MergeSortForGetArray();
+            arr = ob.Sort(ref arr);
+            chart1.Series[0].Points.DataBindY(arr);
+            return arr;
+        }
+
+        public string arrTostring(int[] arr)
+        {
+            string output = string.Join(",", arr);
+
+            return output;
+        }
+
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+            txtArray.Clear();
+
+            radInsertion.Checked = false;
+            radMerge.Checked = false;
+            radShell.Checked = false;
+            radInsertion.Checked = false;
+            txtArraySize.Value = 5;
+            txtMax.Value = 1;
+            chart1.Series[0].Points.Clear();
+            btnClear.Visible = false;
+        }
+    }
    
 }

@@ -7,7 +7,7 @@ It is a Microsoft Forms application written in C# as a final project for CSC-212
 
 Usage
 The user will be greeted with an option to build an array. To do so, an array length, array maximum value, 
-and minimum values must be entered by typing or scrolling on the 3 numeric drop-down selection boxes. After clicking the ìGenerate Arrayî button.
+and minimum values must be entered by typing or scrolling on the 3 numeric drop-down selection boxes. After clicking the ‚ÄúGenerate Array‚Äù button.
 
 
 If all data is valid, the text box to the right of the option will display the array. Also, a chart will appear to show the values visually as well. 
@@ -17,10 +17,11 @@ and a visual option is selected, the user can choose which sort they want to run
 
 
 
-When ìSort!î is clicked, this entire menu is replaced with a chart either displaying visuals for the sort, or just the sorted array on a chart. 
+When ‚ÄúSort!‚Äù is clicked, this entire menu is replaced with a chart either displaying visuals for the sort, or just the sorted array on a chart. 
 There will also be a text box with elapsed time in seconds counting up until the sort is displayed. Visualization will affect this time heavily, 
 so to test the sorts alone, uncheck visualization.
-  
+
+Sorts were written in C++ for team research purposes (as this was the language used in class), and converted to C# for ease of GUI design.  
 
 Authors
 Andre Savage, Warith Balogun, Ade Abujade, Cody Chu

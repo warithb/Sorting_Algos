@@ -1,84 +1,99 @@
 
 #include <iostream>
+#include <random>
+#include <cstdlib> 
+#include <ctime> 
 using namespace std;
 
-// Merge two subarrays L and M into arr
-void merge(int arr[], int p, int q, int r) {
-  
-  // Create L ← A[p..q] and M ← A[q+1..r]
-  int n1 = q - p + 1;
-  int n2 = r - q;
+void randomarrays();
+void merge(int A[], int low, int high, int mid);
+void mergeSort(int A[],int low, int high);
 
-  int L[n1], M[n2];
+int size;
 
-  for (int i = 0; i < n1; i++)
-    L[i] = arr[p + i];
-  for (int j = 0; j < n2; j++)
-    M[j] = arr[q + 1 + j];
+int main(){
+    cout<< "How many numbers you want in the array?" << endl;
+    cin >> size;
+    int array[size];
+ //Random number Generator
+    srand((unsigned)time(0)); 
+        for(int i=0; i<size; i++){ 
+            array[i] = (rand()%100)+1;
+            cout << array[i] << endl;
+        }
 
-  // Maintain current index of sub-arrays and main array
-  int i, j, k;
-  i = 0;
-  j = 0;
-  k = p;
-
-  // Until we reach either end of either L or M, pick larger among
-  // elements L and M and place them in the correct position at A[p..r]
-  while (i < n1 && j < n2) {
-    if (L[i] <= M[j]) {
-      arr[k] = L[i];
-      i++;
-    } else {
-      arr[k] = M[j];
-      j++;
+    int low =0;
+    int high=size-1;
+    mergeSort(array,low,high);
+    cout<<"Sorted List";
+    for(int i=0;i<size;i++)
+    {
+        cout<<array[i]<<" ";
     }
-    k++;
-  }
-
-  // When we run out of elements in either L or M,
-  // pick up the remaining elements and put in A[p..r]
-  while (i < n1) {
-    arr[k] = L[i];
-    i++;
-    k++;
-  }
-
-  while (j < n2) {
-    arr[k] = M[j];
-    j++;
-    k++;
-  }
+    return 0;
 }
 
-// Divide the array into two subarrays, sort them and merge them
-void mergeSort(int arr[], int l, int r) {
-  if (l < r) {
-    // m is the point where the array is divided into two subarrays
-    int m = l + (r - l) / 2;
+using namespace std;
+int Merge(int A[],int p, int q,int r)     
+{
 
-    mergeSort(arr, l, m);
-    mergeSort(arr, m + 1, r);
-
-    // Merge the sorted subarrays
-    merge(arr, l, m, r);
-  }
+    int n1,n2,i,j,k; 
+    //size of left array=n1
+    //size of right array=n2       
+    n1=q-p+1;
+    n2=r-q;             
+    int L[n1],R[n2];
+    //initializing the value of Left part to L[]
+    for(i=0;i<n1;i++)
+    {
+        L[i]=A[p+i];
+    }
+    //initializing the value of Right Part to R[]
+    for(j=0;j<n2;j++)
+    {
+        R[j]=A[q+j+1];
+    }
+    i=0,j=0;
+    //Comparing and merging them
+    //into new array in sorted order 
+    for(k=p;i<n1&&j<n2;k++)
+    {
+        if(L[i]<R[j])
+        {
+            A[k]=L[i++];
+        }
+        else
+        {
+            A[k]=R[j++];
+        }
+    }
+    //If Left Array L[] has more elements than Right Array R[]
+    //then it will put all the
+    // reamining elements of L[] into A[]
+    while(i<n1)             
+    {
+        A[k++]=L[i++];
+    }
+    //If Right Array R[] has more elements than Left Array L[]
+    //then it will put all the
+    // reamining elements of L[] into A[]
+    while(j<n2)
+    {
+        A[k++]=R[j++];
+    }
 }
-
-// Print the array
-void printArray(int arr[], int size) {
-  for (int i = 0; i < size; i++)
-    cout << arr[i] << " ";
-  cout << endl;
-}
-
-// Driver program
-int main() {
-  int arr[] = {6, 5, 12, 10, 9, 1};
-  int size = sizeof(arr) / sizeof(arr[0]);
-
-  mergeSort(arr, 0, size - 1);
-
-  cout << "Sorted array: \n";
-  printArray(arr, size);
-  return 0;
+//This is Divide Part
+//This part will Divide the array into 
+//Sub array and then will Merge them
+//by calling Merge()
+int MergeSort(int A[],int p,int r)    
+{
+    int q;                                
+    if(p<r)
+    {
+        q=(p+r)/2;
+        MergeSort(A,p,q);
+        MergeSort(A,q+1,r);
+        Merge(A,p,q,r);
+    }
 }

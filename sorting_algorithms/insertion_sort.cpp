@@ -25,7 +25,7 @@ void insertionSort(int arr[])
         //if position[j] is greater than temp then it will do swaps until it is sorted
         while(j>=0 && arr[j]>temp)
         {
-            //this line of code puts the larger number takes the place of the smaller number in the position of the array
+            //This line of code puts the larger number in the place of the smaller number in the position of the array
             arr[j+1] = arr[j];
             /*decrements to make comparisons untill there is a condition where the interger being compared is lesser than
             what is being compared or it is at position 0 of the array

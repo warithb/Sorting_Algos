@@ -19,9 +19,9 @@ and a visual option is selected, the user can choose which sort they want to run
 
 ![alt text](https://github.com/warithb/Sorting_Algos/blob/main/images/selectSort.PNG?raw=true)
 
-When “Sort!” is clicked, this entire menu is replaced with a chart either displaying visuals for the sort, or just the sorted array on a chart. 
 There will also be a text box with elapsed time in seconds counting up until the sort is displayed. Visualization will affect this time heavily, 
-so to test the sorts alone, uncheck visualization.
+so to test the sorts alone, uncheck visualization. When “Sort!” is clicked, this entire menu is replaced with a chart either displaying visuals for the sort, or just the sorted array on a chart. After the sort completes, from the file menu at the top right, the user can click the back button. This will bring you back to the home menu, where your unsorted array saves in the case you select/deselect the visualization button, or switch to a different so to compair times.
+
 
 ![alt text](https://github.com/warithb/Sorting_Algos/blob/main/images/viewSort.PNG?raw=true)
 
